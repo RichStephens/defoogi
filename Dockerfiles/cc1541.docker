@@ -7,12 +7,17 @@ ARG CC1541_VERSION
 ARG PKG=cc1541
 WORKDIR /${PKG}-build
 
+#ARG CC1541_REPO=https://bitbucket.org/ptv_claus/cc1541.git
+### As of 2026-JUN-29 the official repo is missing, using an alternative
+ARG CC1541_REPO=https://bitbucket.org/JackAsser/cc1541.git
+
 RUN rm -rf /usr/local/*
 
 RUN <<EOF
   set -e
-  git clone -b ${CC1541_VERSION} https://bitbucket.org/ptv_claus/cc1541.git
+  git clone ${CC1541_REPO}
   cd cc1541
+  git checkout ${CC1541_VERSION}
   make
   make install
 EOF
@@ -28,7 +33,7 @@ RUN <<EOF
 
   mkdir DEBIAN
   echo Package: "${PKG}" >> DEBIAN/control
-  echo Version: "${CC1541_VERSION}" >> DEBIAN/control
+  echo Version: "0-${CC1541_VERSION}" >> DEBIAN/control
   echo Maintainer: ${MAINTAINER} >> DEBIAN/control
   echo Architecture: "$(dpkg-architecture -q DEB_HOST_ARCH)" >> DEBIAN/control
   echo Description: "${PKG}" >> DEBIAN/control

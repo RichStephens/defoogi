@@ -17,6 +17,7 @@ RUN <<EOF
     less \
     libz-dev \
     mtools \
+    nasm \
     sudo \
     unzip \
     wget \
